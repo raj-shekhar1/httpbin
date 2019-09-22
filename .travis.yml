@@ -20,8 +20,8 @@ env:
     - NODE_DEPLOYMENT=node-deploy
     - NGINX_CONTAINER=nginx-container
     - NODE_CONTAINER=node-container
-script:
-  - $HOME/google-cloud-sdk/raj-shekhar1/httpbin/deploy-prod.sh
+#script:
+ # - $HOME/google-cloud-sdk/raj-shekhar1/httpbin/deploy-prod.sh
   #- npm run build    
 before_deploy:
   - if [ ! -d "$HOME/google-cloud-sdk/bin" ]; then rm -rf $HOME/google-cloud-sdk; export CLOUDSDK_CORE_DISABLE_PROMPTS=1; curl https://sdk.cloud.google.com | bash; fi
@@ -31,8 +31,8 @@ before_deploy:
   - gcloud --quiet components update kubectl
 deploy:
   - provider: script
-    #script: chmod +x gcloud/deploy-prod.sh && gcloud/deploy-prod.sh
-    script: chmod +x ./deploy-prod.sh
+    script: chmod +x gcloud/deploy-prod.sh && gcloud/deploy-prod.sh
+   # script: chmod +x ./deploy-prod.sh
     skip_cleanup: true
     on:
       branch: master
