@@ -1,26 +1,37 @@
-dist: trusty
-language: python
-
 sudo: false
-matrix:
-    include:
-        - python: 2.7
-          env: TOXENV=py27
-        - python: 3.6
-          env: TOXENV=py36
-        - python: 3.7
-          env: TOXENV=py37
-          dist: xenial
-          sudo: true
-
-before_install:
-  - docker build -t carlad/sinatra .
-
-install:
-    - travis_retry pip install tox
-
+language: python
+cache: 
+  #yarn: true
+  directories:
+    - "$HOME/google-cloud-sdk/"
+services:
+  - docker
+#before_install: npm install yarn -g
+env:
+  global:
+    - GOOGLE_APPLICATION_CREDENTIALS=~/gcloud-service-key.json
+    - PROJECT_PROD=storied-imprint-228613
+    - CLUSTER=sanata-cluster
+    - ZONE=us-central1-b
+    - NGINX_IMAGE=sanata-web
+    - NODE_IMAGE=sanata-srv
+    - HTTPBIN_IMAGE=http-bin
+    - NGINX_DEPLOYMENT=nginx-deploy
+    - NODE_DEPLOYMENT=node-deploy
+    - NGINX_CONTAINER=nginx-container
+    - NODE_CONTAINER=node-container
+script:
+  - npm test
+  - npm run build    
+before_deploy:
+  - if [ ! -d "$HOME/google-cloud-sdk/bin" ]; then rm -rf $HOME/google-cloud-sdk; export CLOUDSDK_CORE_DISABLE_PROMPTS=1; curl https://sdk.cloud.google.com | bash; fi
+  - source /home/travis/google-cloud-sdk/path.bash.inc
+  - gcloud --quiet version
+  - gcloud --quiet components update
+  - gcloud --quiet components update kubectl
 deploy:
-  provider: script
-  script: bash docker_push
-  on:
-    branch: master
+  - provider: script
+    script: chmod +x gcloud/deploy-prod.sh && gcloud/deploy-prod.sh
+    skip_cleanup: true
+    on:
+      branch: master
