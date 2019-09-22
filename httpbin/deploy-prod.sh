@@ -8,7 +8,7 @@ cd raj-shekhar1/k8s-cluster-tf
 #bundle install
 #bundle exec jekyll build
 cd -
-set -e
+#set -e
 
 docker build -t gcr.io/${PROJECT_PROD}/${HTTPBIN_IMAGE}:$TRAVIS_COMMIT -f docker/nginx.dockerfile .
 #docker build -t gcr.io/${PROJECT_PROD}/${NODE_IMAGE}:$TRAVIS_COMMIT -f docker/node.dockerfile .
