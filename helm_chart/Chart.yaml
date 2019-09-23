@@ -1,0 +1,7 @@
+name: kubehttpbin
+home: localhost
+version: 1.0
+description: httpbin container running on Kubernetes
+maintainers:
+  - name: Raj Shekhar Bhardwaj
+    email: rsbhardwaj08@gmail.com

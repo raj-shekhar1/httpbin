@@ -1,0 +1,6 @@
+containerPort: 8080
+namespace: kubehttpbin
+numReplicas: 1
+dockerTag: latest
+dockerPullPolicy: IfNotPresent
+containerPort: 80
